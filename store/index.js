@@ -13,7 +13,7 @@ const store = new Vuex.Store({
 		session_key:null,
 		// testvuex:false,
   //       colorIndex: 0,
-        // colorList: ['#FF0000','#00FF00','#0000FF']
+        colorList: ['#FF0000','#00FF00','#0000FF']
 	},
 	mutations: {
 		login(state, provider) {

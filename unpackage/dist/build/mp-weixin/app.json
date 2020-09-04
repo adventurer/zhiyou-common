@@ -30,7 +30,9 @@
     "pages/account/account",
     "pages/recharge/recharge",
     "pages/login/login",
-    "pages/article/article"
+    "pages/article/article",
+    "pages/bids/bids",
+    "pages/friends/friends"
   ],
   "subPackages": [],
   "window": {
@@ -45,6 +47,8 @@
   },
   "usingComponents": {
     "home": "/pages/home/home",
+    "bids": "/pages/bids/bids",
+    "friends": "/pages/friends/friends",
     "account": "/pages/account/account",
     "recharge": "/pages/recharge/recharge",
     "login": "/pages/login/login",
@@ -53,6 +57,5 @@
     "components": "/pages/component/home",
     "plugin": "/pages/plugin/home",
     "cu-custom": "/colorui/components/cu-custom"
-  },
-  "sitemapLocation": "sitemap.json"
+  }
 }

@@ -123,6 +123,14 @@
             "path" : "pages/article/article",
             "style" : {}
         }
+        ,{
+            "path" : "pages/bids/bids",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/friends/friends",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"mp-alipay": {

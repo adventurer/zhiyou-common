@@ -11,7 +11,7 @@
 			</view>
 		</view>
 		
-		<scroll-view scroll-y class="page">
+		<!-- <scroll-view scroll-y class="page"> -->
 			<view class="nav-list" style="margin-top: 80rpx;">
 				<view @tap="recharge(item.Fee)" style="width: 100%;" hover-class='none' :open-type='none' class="nav-li" :class="'bg-'+item.Color"
 				 :style="[{animation: 'show ' + ((index+1)*0.2+1) + 's 1'}]" v-for="(item,index) in elements" :key="index">
@@ -21,7 +21,7 @@
 				</view>
 			</view>
 			<view class="cu-tabbar-height"></view>
-		</scroll-view>
+		<!-- </scroll-view> -->
 		
 		
 	</view>
@@ -89,6 +89,11 @@
 
 			},
 			async commitTicket(index){
+				wx.showToast({
+				  title: '订单获取中',
+				  icon: 'loading',
+				  duration: 5000
+				})
 				let that = this
 				wx.request({ 
 					url: 'https://admin.jiasu.zhifool.com/api/v1/weixin/microrecharge',
@@ -101,7 +106,6 @@
 					},
 					method:"POST",
 					success (res) {
-						console.log(res.data.Sta)
 						if(res.data.Sta==0){
 							// wx.showModal({
 							//   title: '提示',
@@ -121,6 +125,7 @@
 							that.package = res.data.Data.package
 							that.paySign = res.data.Data.paySign
 							that.signType = res.data.Data.signType
+							wx.hideToast()
 							that.commitPay()
 							return true
 						}
@@ -137,10 +142,10 @@
 				  signType: that.signType,
 				  paySign: that.paySign,
 				  success (res) { 
-					  // console.log(res)
+					  console.log(res)
 				  },
 				  fail (res) { 
-					  // console.log(res)
+					  console.log(res)
 				  }
 				})	
 			}

@@ -8,51 +8,8 @@
 		<recharge v-if="PageCur=='recharge'"></recharge>
 		<login v-if="PageCur=='login'"></login>
 		<article v-if="PageCur=='article'"></article>
+		<bids v-if="PageCur=='bids'"></bids> 
 		
-		<!-- <view class="cu-bar tabbar bg-white shadow foot">
-			<view class="action" @click="NavChange" data-cur="basics">
-				<view class='cuIcon-cu-image'>
-					<image :src="'/static/tabbar/basics' + [PageCur=='basics'?'_cur':''] + '.png'"></image>
-				</view>
-				<view :class="PageCur=='basics'?'text-green':'text-gray'">元素</view>
-			</view> 
-			<view class="action" @click="NavChange" data-cur="component">
-				<view class='cuIcon-cu-image'>
-					<image :src="'/static/tabbar/component' + [PageCur == 'component'?'_cur':''] + '.png'"></image>
-				</view>
-				<view :class="PageCur=='component'?'text-green':'text-gray'">组件</view>
-			</view>
-			<view class="action" @click="NavChange" data-cur="plugin">
-				<view class='cuIcon-cu-image'>
-					<image :src="'/static/tabbar/plugin' + [PageCur == 'plugin'?'_cur':''] + '.png'"></image>
-				</view>
-				<view :class="PageCur=='plugin'?'text-green':'text-gray'">扩展</view>
-			</view>
-		</view> -->
-		<!-- <view class="cu-bar tabbar bg-white foot">
-			<view class="action text-green" @click="NavChange" data-cur="home">
-				<view class="cuIcon-homefill" :class="PageCur=='home'?'text-green':'text-gray'"></view> 首页
-			</view>
-			<view class="action text-gray" @click="NavChange" data-cur="basics">
-				<view class="cuIcon-similar" :class="PageCur=='basics'?'text-green':'text-gray'"></view> 元素
-			</view>
-			<view class="action text-gray add-action">
-				<button class="cu-btn cuIcon-add bg-green shadow"></button>
-				扫一扫
-			</view>
-			<view class="action text-gray" @click="NavChange" data-cur="component">
-				<view class="cuIcon-cart">
-					<view class="cu-tag badge" :class="PageCur=='component'?'text-green':'text-gray'">99</view>
-				</view>
-				组件
-			</view>
-			<view class="action text-gray" @click="NavChange" data-cur="plugin">
-				<view class="cuIcon-my">
-					<view class="cu-tag badge" :class="PageCur=='plugin'?'text-green':'text-gray'"></view>
-				</view> 
-				扩展
-			</view>
-		</view> -->
 		
 		<view class="cu-bar bg-white tabbar border shop foot">
 			<button class="action" @click="NavChange" data-cur="home">
@@ -63,6 +20,9 @@
 			<view class="action text-orange" @click="NavChange" data-cur="account">
 				<view class="cuIcon-profilefill"></view> 账户中心
 			</view>
+			<!-- <button class="action text-orange" open-type="contact">
+				<view class="cuIcon-communityfill"></view> 客服
+			</button> -->
 			<!-- <view class="action text-orange" @click="NavChange" data-cur="basics">
 				<view class="cuIcon-profilefill"></view> 基本
 			</view>
@@ -83,6 +43,7 @@
 				// PageCur: 'account',
 				// PageCur: 'login',
 				// PageCur: 'recharge',
+				// PageCur: 'bids',
 				   
 				
 			} 

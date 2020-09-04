@@ -23,24 +23,12 @@
 						</view>
 					</view>
 				</view>
-				
-		
-				
 			</view>
-			<view class="cu-list menu">
-				<view class="cu-item" :class="menuArrow?'arrow':''" v-for="(item,index) in bids">
-					<view class="content">
-						<text class="cuIcon-warn text-green"></text>
-						<text class="text-grey">{{item.Name}}</text>
-					</view>
-					<view class="action">
-						<view class="solid-bottom text-xxl padding">
-							<text v-if="item.Status==2" class="cuIcon-roundcheckfill text-green"></text>
-							<text v-if="item.Status==1" class="cuIcon-roundcheckfill red"></text>
-						</view>
-					</view>
-				</view>
-			</view> 
+			<view class="padding flex flex-direction">
+				<button @click="copyOpenid()" class="cu-btn bg-mauve margin-tb-sm lg">复制openid</button>
+			</view>
+			
+			
 		</view>
 	</view>
 	
@@ -54,6 +42,7 @@
 				nickName:null,
 				avatarUrl:"http://admin.jiasu.zhifool.com:8080/uploads/about.png",
 				bids:{},
+				board:"",
 			}
 		},
 		mounted() {
@@ -79,24 +68,30 @@
 				}
 			})
 			
-			wx.request({
-				url: 'https://admin.jiasu.zhifool.com/api/v1/weixin/microrechargelog',
-				data: {
-					openid: that.$store.state.openid,
-				}, 
-				header: {
-				    'content-type': 'application/x-www-form-urlencoded' // 默认值
-				},
-				method:"POST",
-				success (res) {
-					// console.log(res.data)
-					that.bids = res.data.Data
-				}
-			})
+			
 			
 			
 		},
 		methods: {
+			copyOpenid(){
+				let that = this
+				wx.setClipboardData({
+				  data: that.$store.state.openid,
+				  success (res) {
+				    wx.getClipboardData({
+				      success (res) {
+				        wx.showModal({
+				          title: '提示',
+				          content: "已复制openid到剪辑板",
+				          showCancel:false,
+				          success (res) {
+				          }
+				        })
+				      }
+				    })
+				  }
+				})
+			},
 			freeHours(){
 				let that = this
 				wx.request({

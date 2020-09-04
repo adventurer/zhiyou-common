@@ -5,6 +5,13 @@ import store from './store'
 import home from './pages/home/home.vue'
 Vue.component('home',home)
 
+import bids from './pages/bids/bids.vue'
+Vue.component('bids',bids)
+
+import friends from './pages/friends/friends.vue'
+Vue.component('friends',friends)
+
+
 import account from './pages/account/account.vue'
 Vue.component('account',account)
 

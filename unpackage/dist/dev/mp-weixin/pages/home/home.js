@@ -159,40 +159,65 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default =
 {
   data: function data() {
     return {
-      cardCur: 0,
-      swiperList: [{
-        id: 0,
-        type: 'image',
-        url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big84000.jpg' },
+      cuIconList: [{
+        cuIcon: 'scan',
+        color: 'red',
+        badge: 0,
+        nameEn: 'scan',
+        name: '扫码' },
       {
-        id: 1,
-        type: 'image',
-        url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big37006.jpg' },
+        cuIcon: 'recharge',
+        color: 'orange',
+        badge: 0,
+        nameEn: 'bids',
+        name: '充值记录' },
       {
-        id: 2,
-        type: 'image',
-        url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big39000.jpg' },
-      {
-        id: 3,
-        type: 'image',
-        url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg' },
-      {
-        id: 4,
-        type: 'image',
-        url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg' },
-      {
-        id: 5,
-        type: 'image',
-        url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big21016.jpg' },
-      {
-        id: 6,
-        type: 'image',
-        url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg' }],
+        cuIcon: 'friend',
+        color: 'olive',
+        badge: 0,
+        nameEn: 'friends',
+        name: '官方群' }],
 
+      modalName: null,
+      gridCol: 3,
+      gridBorder: false,
+      menuBorder: false,
+      menuArrow: false,
+      menuCard: false,
+      skin: false,
+      listTouchStart: 0,
+      listTouchDirection: null,
+      cardCur: 0,
+      swiperList: [],
       dotStyle: false,
       towerStart: 0,
       direction: '',
@@ -200,7 +225,7 @@ var _default =
 
   },
   mounted: function mounted() {
-    this.TowerSwiper('swiperList');
+    // this.TowerSwiper('swiperList');
     // 初始化towerSwiper 传已有的数组名即可
     var that = this;
     wx.request({
@@ -222,6 +247,52 @@ var _default =
   },
 
   methods: {
+    menuClick: function menuClick(e) {
+      if (e == "scan") {
+        wx.scanCode({
+          onlyFromCamera: true,
+          success: function success(res) {
+            console.log(res);
+            var sat = res.result.indexOf("=");
+            var clientid = res.result.substr(sat);
+            console.log("clientid:" + clientid);
+            wx.navigateTo({
+              url: "/pages/login/login?q" + clientid });
+
+          } });
+
+      }
+
+      if (e == "bids") {
+        wx.navigateTo({
+          url: "/pages/bids/bids" });
+
+      }
+
+      if (e == "friends") {
+        wx.navigateTo({
+          url: "/pages/friends/friends" });
+
+      }
+    },
+    Gridchange: function Gridchange(e) {
+      this.gridCol = e.detail.value;
+    },
+    Gridswitch: function Gridswitch(e) {
+      this.gridBorder = e.detail.value;
+    },
+    MenuBorder: function MenuBorder(e) {
+      this.menuBorder = e.detail.value;
+    },
+    MenuArrow: function MenuArrow(e) {
+      this.menuArrow = e.detail.value;
+    },
+    MenuCard: function MenuCard(e) {
+      this.menuCard = e.detail.value;
+    },
+    SwitchSex: function SwitchSex(e) {
+      this.skin = e.detail.value;
+    },
     DotStyle: function DotStyle(e) {
       this.dotStyle = e.detail.value;
     },
@@ -326,7 +397,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ 55:
+/***/ 69:
 /*!*****************************************************************************!*\
   !*** E:/zhiyou-common/zhiyou-common/main.js?{"page":"pages%2Fhome%2Fhome"} ***!
   \*****************************************************************************/
@@ -342,5 +413,5 @@ createPage(_home.default);
 
 /***/ })
 
-},[[55,"common/runtime","common/vendor"]]]);
+},[[69,"common/runtime","common/vendor"]]]);
 //# sourceMappingURL=../../../.sourcemap/mp-weixin/pages/home/home.js.map
