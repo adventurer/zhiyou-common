@@ -44,8 +44,7 @@
 				// PageCur: 'login',
 				// PageCur: 'recharge',
 				// PageCur: 'bids',
-				   
-				
+
 			} 
 		},
 		onLoad() {

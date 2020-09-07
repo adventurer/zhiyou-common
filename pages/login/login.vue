@@ -5,7 +5,16 @@
 		</cu-custom>
 		<view class="btn_login">
 			<!-- <button @tap="login()" open-type='getUserInfo' class="cu-btn block bg-black margin-tb-sm lg" :loading="loading"> 点击登录</button> -->
-			<button @getuserinfo="handleGetUserInfo" open-type='getUserInfo' class="cu-btn block bg-blue margin-tb-sm lg" :loading="loading" :disabled="disable" type="">点击登录</button>
+			<button @getuserinfo="handleGetUserInfo" open-type='getUserInfo' class="cu-btn block bg-blue margin-tb-sm lg" :loading="loading" :disabled="disable" type="">{{loginText}}</button>
+		</view>
+		
+		<view class="solids-bottom padding-xs flex align-center">
+			<view class="flex-sub text-center">
+				<view class="solid-bottom text-xl padding">
+					<text class="text-black text-bold">登录说明</text>
+				</view>
+				<view class="padding">点击登录将打开30秒视频广告,此时后台将在广告播放进行时打开加速器.若10秒内未弹出加速器界面,您可以关闭广告和小程序重新扫码尝试登录.</view>
+			</view>
 		</view>
 		
 	</view>
@@ -19,21 +28,81 @@
 				info:{},
 				loading:false,
 				disable:'',
+				adshow:false,
+				loginText:"点击观看广告并登录",
+				videoAd:null,
 			};
 		},
 		onLoad: function (options) {
-			console.log("login onload run...") 
-			console.log(this)
+			console.log("login onload...")
 			var url = decodeURIComponent(options.q)
-			console.log(url)
+			console.log(options)
 			var sat = url.indexOf('=')
+			console.log(sat)
 			var val = url.substr(sat+1) 
 			this.clientid = val
 			this.info = this.$store.state
+			
+			// 在页面onLoad回调事件中创建激励视频广告实例
+			if (wx.createRewardedVideoAd) {
+			  this.videoAd = wx.createRewardedVideoAd({
+			    adUnitId: 'adunit-414e4f5508476e77'
+			  })
+			  this.videoAd.onLoad(() => {
+				  console.log("ad loaded...")
+			  })
+			  this.videoAd.onError((err) => {
+				  console.log("ad err...")
+			  })
+			  this.videoAd.onClose((res) => {
+					if (res && res.isEnded) {
+						wx.showModal({
+						  title: '提示',
+						  content: "广告播放完成,感谢您的鼓励,将跳转到首页",
+						  showCancel:false,
+						  success (res) {
+							  if (res.confirm) {
+							    wx.redirectTo({
+							      url: '/pages/index/index'
+							    })
+							  }
+						  }
+						})
+					} else {
+						wx.showModal({
+						  title: '提示',
+						  content: "由于您提前关闭了视频广告,我们将无法取得任何服务经费",
+						  showCancel:false,
+						  success (res) {
+							  if (res.confirm) {
+							    wx.redirectTo({
+							      url: '/pages/index/index'
+							    })
+							  }
+						  }
+						})
+					}
+			  })
+			}
+			
+
+			
 		},
 		methods: {
 			handleGetUserInfo(e) {
 				let that = this
+				// 准备clientid
+				if(that.clientid == null){
+					wx.showModal({
+					  title: '提示',
+					  content: "clientid未准备好,请重新扫码",
+					  showCancel:false,
+					  success (res) {
+					  }
+					})
+					return
+				}
+				// 准备openid
 				if(that.$store.state.openid == null){
 					wx.showModal({
 					  title: '提示',
@@ -44,8 +113,22 @@
 					})
 					return
 				}
+				
 				that.loading = true
 				that.disable = 'disabled'
+				
+				
+				// 用户触发广告后，显示激励视频广告
+				if (this.videoAd) {
+				  this.videoAd.show().catch(() => {
+				    // 失败重试
+				    this.videoAd.load()
+				      .then(() => this.videoAd.show())
+				      .catch(err => {
+				        console.log('激励视频 广告显示失败')
+				      })
+				  })
+				}
 				
 				console.log("handle...")
 				wx.getSetting({
@@ -87,18 +170,17 @@
 					  	},
 					  	method:"POST",
 					  	success (res) {
-					  		wx.showModal({
-					  		  title: '提示',
-					  		  content: res.data.Msg,
-					  		  showCancel:false,
-					  		  success (res) {
-					  		    if (res.confirm) {
-					  		      wx.redirectTo({
-					  		        url: '/pages/index/index'
-					  		      })
-					  		    }
-					  		  }
-					  		})
+							if(res.data.Sta == 0){
+								wx.showModal({
+								  title: '提示',
+								  content: res.data.Msg,
+								  showCancel:false,
+								  success (res) {
+								    
+								  }
+								})
+							}
+					  		
 					  	}
 					  })
 					  

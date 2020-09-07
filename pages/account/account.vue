@@ -19,7 +19,7 @@
 							</view>
 							<view class="text-sm flex justify-between">
 								当前有效期至:<text>{{expiredAt}}</text>
-							</view>  
+							</view>
 						</view>
 					</view>
 				</view>
@@ -43,6 +43,7 @@
 				avatarUrl:"http://admin.jiasu.zhifool.com:8080/uploads/about.png",
 				bids:{},
 				board:"",
+				interstitialAd:null,
 			}
 		},
 		mounted() {
@@ -67,6 +68,20 @@
 					
 				}
 			})
+			
+			// 在页面中定义插屏广告
+			
+			// 在页面onLoad回调事件中创建插屏广告实例
+			if (wx.createInterstitialAd) {
+			  that.interstitialAd = wx.createInterstitialAd({
+			    adUnitId: 'adunit-5aa5637f37f8c6a5'
+			  })
+			  that.interstitialAd.onLoad(() => {})
+			  that.interstitialAd.onError((err) => {})
+			  that.interstitialAd.onClose(() => {})
+			}
+			
+			
 			
 			
 			
@@ -94,6 +109,13 @@
 			},
 			freeHours(){
 				let that = this
+				// 在适合的场景显示插屏广告
+				if (that.interstitialAd) {
+				  that.interstitialAd.show().catch((err) => {
+				    console.error(err)
+				  })
+				}
+				
 				wx.request({
 					url: 'https://admin.jiasu.zhifool.com/api/v1/weixin/microfreehours',
 					data: {

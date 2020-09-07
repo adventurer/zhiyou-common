@@ -139,7 +139,6 @@
 					    console.log(res)
 						let sat = res.result.indexOf("=")
 						let clientid = res.result.substr(sat)
-						console.log("clientid:"+clientid)
 						wx.navigateTo({
 						  url: "/pages/login/login?q"+clientid
 						})
