@@ -18,12 +18,21 @@
 								<button @click="freeHours" class="cu-btn bg-red fr">领免费时长</button>
 							</view>
 							<view class="text-sm flex justify-between">
-								当前有效期至:<text>{{expiredAt}}</text>
+								加速到期时间:<text>{{expiredAt}}</text>
 							</view>
 						</view>
 					</view>
 				</view>
 			</view>
+			
+			<view class="solids-bottom padding-xs flex align-center">
+				<view class="flex-sub text-center">
+					<view class="solid-bottom text-sm padding">
+						<text class="text-bold">免费时长为每日零点开始可领取一次.以领取时刻为准,加速器到期时间将向后顺延10个小时.</text>
+					</view>
+				</view>
+			</view>
+			
 			<view class="padding flex flex-direction">
 				<button @click="copyOpenid()" class="cu-btn bg-mauve margin-tb-sm lg">复制openid</button>
 			</view>
@@ -61,11 +70,12 @@
 				method:"POST",
 				success (res) {
 					console.log(res.data)
-					that.expiredAt = res.data.Data.ExpiredAt
+					// that.expiredAt = res.data.Data.ExpiredAt
 					that.nickName = res.data.Data.NickName
 					that.avatarUrl = res.data.Data.HeadImgURL
-					
-					
+					console.log(res.data.Data.ExpiredAt)
+					let d = new Date(res.data.Data.ExpiredAt)
+					that.expiredAt = d.toLocaleString()
 				}
 			})
 			

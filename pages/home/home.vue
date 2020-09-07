@@ -64,6 +64,13 @@
 				
 			</view>
 			</scroll-view>
+			
+			<view class="cu-bar bg-white solid-bottom margin-top">
+				<view class="action">
+					<ad unit-id="adunit-bebcfa8da6c5f5bb" ad-type="video" ad-theme="white"></ad>
+				</view>
+			</view>
+			
 		</view> 
 	</view>
 </template>
