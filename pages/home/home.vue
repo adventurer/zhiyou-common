@@ -50,26 +50,27 @@
 					<text class="cuIcon-title text-orange "></text> 消息
 				</view>
 			</view>
-			<view class="cu-list menu-avatar">
-				<view class="cu-item " v-for="(item,index) in articles" @click="NaviToArticle(item.ID)">
-					<view class="cu-avatar radius lg" style="background-image:url(https://ossweb-img.qq.com/images/lol/img/champion/Morgana.png);"></view>
-					<view class="content">
-						<view class="text-pink"><view class="text-cut">{{item.Name}}</view></view>
-						<view class="text-gray text-sm flex"> <view class="text-cut">{{item.CreatedAt}}</view></view>
-					</view>
-					<view class="action">
-						<view class="text-grey text-xs">{{item.Created}}</view>
+			<view class="cu-list">
+				<view class="cu-item" v-for="(item,index) in articles" @click="NaviToArticle(item.ID)">
+					<!-- <view class="cu-avatar radius lg" style="background-image:url(https://ossweb-img.qq.com/images/lol/img/champion/Morgana.png);"></view> -->
+					<view class="content solid-bottom">
+						<view class="text-pink margin-xs">
+							<view class="text-cut">{{item.Name}}</view>
+						</view>
+						<view class="text-gray text-sm flex margin-left-xs"> 
+							<view class="text-cut">{{item.CreatedAt}}</view>
+						</view>
 					</view>
 				</view>
 				
 			</view>
 			</scroll-view>
 			
-			<view class="cu-bar bg-white solid-bottom margin-top">
+			<!-- <view class="cu-bar bg-white solid-bottom margin-top">
 				<view class="action">
 					<ad unit-id="adunit-bebcfa8da6c5f5bb" ad-type="video" ad-theme="white"></ad>
 				</view>
-			</view>
+			</view> -->
 			
 		</view> 
 	</view>
@@ -93,13 +94,19 @@
 					name: '充值记录'
 				}, {
 					cuIcon: 'friend',
-					color: 'olive',
+					color: 'orange',
 					badge: 0,
 					nameEn: 'friends',
 					name: '官方群'
+				},{
+					cuIcon: 'copy',
+					color: 'orange',
+					badge: 0,
+					nameEn: 'copy',
+					name: '复制id'
 				}],
 				modalName: null,
-				gridCol: 3,
+				gridCol: 4,
 				gridBorder: false,
 				menuBorder: false,
 				menuArrow: false,
@@ -116,6 +123,7 @@
 			};
 		},
 		mounted() {
+			wx.showShareMenu()
 			// this.TowerSwiper('swiperList');
 			// 初始化towerSwiper 传已有的数组名即可
 			let that = this
@@ -163,6 +171,10 @@
 					wx.navigateTo({
 					  url: "/pages/friends/friends"
 					})
+				}
+				
+				if(e =="copy"){
+					this.copyOpenid()
 				}
 			},
 			Gridchange(e) {
@@ -254,6 +266,25 @@
 				    res.eventChannel.emit('acceptDataFromOpenerPage', { data: 'test' })
 				  }
 				})
+			},
+			copyOpenid(){
+				let that = this
+				wx.setClipboardData({
+				  data: that.$store.state.openid,
+				  success (res) {
+				    wx.getClipboardData({
+				      success (res) {
+				        wx.showModal({
+				          title: '提示',
+				          content: "已复制openid到剪辑板",
+				          showCancel:false,
+				          success (res) {
+				          }
+				        })
+				      }
+				    })
+				  }
+				})
 			}
 		}
 	}
@@ -264,5 +295,12 @@
 		transform: scale(calc(0.5 + var(--index) / 10));
 		margin-left: calc(var(--left) * 100upx - 150upx);
 		z-index: var(--index);
+	}
+	
+	.cu-item .content{
+		min-height: 100rpx;
+		background-color: #fff;
+		padding-left: 3%;
+		padding-top: 10rpx;
 	}
 </style>

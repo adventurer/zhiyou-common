@@ -9,11 +9,12 @@
 		</view>
 		
 		<view class="solids-bottom padding-xs flex align-center">
-			<view class="flex-sub text-center">
-				<view class="solid-bottom text-xl padding">
-					<text class="text-black text-bold">登录说明</text>
+			<view class="flex-sub">
+				<view class="text-xl padding text-center">
+					<text class="text-black text-bold ">登录说明</text>
 				</view>
-				<view class="padding">点击登录将打开30秒视频广告,此时后台将在广告播放进行时打开加速器.若10秒内未弹出加速器界面,您可以关闭广告和小程序重新扫码尝试登录.</view>
+				<view class="padding">1.点击登录将打开30秒视频广告,此时后台将在广告播放进行时打开加速器.若10秒内未弹出加速器界面,您可以关闭广告和小程序重新扫码尝试登录.</view>
+				<view class="padding">2.由于可弹出的广告数量有限,请尽量点击广告来延长次日集体补时时长.</view>
 			</view>
 		</view>
 		
@@ -52,7 +53,18 @@
 				  console.log("ad loaded...")
 			  })
 			  this.videoAd.onError((err) => {
-				  console.log("ad err...")
+				  wx.showModal({
+				    title: '提示',
+				    content: err.errMsg,
+				    showCancel:false,
+				    success (res) {
+				  	  if (res.confirm) {
+				  	    wx.redirectTo({
+				  	      url: '/pages/index/index'
+				  	    })
+				  	  }
+				    }
+				  })
 			  })
 			  this.videoAd.onClose((res) => {
 					if (res && res.isEnded) {

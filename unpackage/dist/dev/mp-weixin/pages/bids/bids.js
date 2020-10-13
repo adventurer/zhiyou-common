@@ -159,6 +159,12 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 //
 //
 //
+//
+//
+//
+//
+//
+//
 var _default =
 {
   data: function data() {
@@ -168,32 +174,14 @@ var _default =
       avatarUrl: "http://admin.jiasu.zhifool.com:8080/uploads/about.png",
       bids: {},
       loading: true,
-      tips: "充值记录加载中!" };
+      tips: "充值记录加载中!",
+      disable: false };
 
   },
   mounted: function mounted() {
 
     //获取账户基本信息
     var that = this;
-    // wx.request({ 
-    // 	url: 'https://admin.jiasu.zhifool.com/api/v1/weixin/microuinfo',
-    // 	data: {
-    // 		openid: that.$store.state.openid,
-    // 	}, 
-    // 	header: {
-    // 	    'content-type': 'application/x-www-form-urlencoded' // 默认值
-    // 	},
-    // 	method:"POST",
-    // 	success (res) {
-    // 		console.log(res.data)
-    // 		that.expiredAt = res.data.Data.ExpiredAt
-    // 		that.nickName = res.data.Data.NickName
-    // 		that.avatarUrl = res.data.Data.HeadImgURL
-
-
-    // 	}
-    // })
-
     wx.request({
       url: 'https://admin.jiasu.zhifool.com/api/v1/weixin/microrechargelog',
       data: {
@@ -230,12 +218,14 @@ var _default =
 
   },
   methods: {
-    freeHours: function freeHours() {
+    refund: function refund(bidId) {
       var that = this;
+      that.disable = true;
       wx.request({
-        url: 'https://admin.jiasu.zhifool.com/api/v1/weixin/microfreehours',
+        url: 'https://admin.jiasu.zhifool.com/api/v1/weixin/microrefund',
         data: {
-          openid: that.$store.state.openid },
+          openid: that.$store.state.openid,
+          ticketid: bidId },
 
         header: {
           'content-type': 'application/x-www-form-urlencoded' // 默认值
@@ -248,11 +238,11 @@ var _default =
             content: res.data.Msg,
             showCancel: false,
             success: function success(res) {
-              if (res.confirm) {
-                console.log('用户点击确定');
-              } else if (res.cancel) {
-                console.log('用户点击取消');
-              }
+              // if (res.confirm) {
+              //   console.log('用户点击确定')
+              // } else if (res.cancel) {
+              //   console.log('用户点击取消')
+              // }
             } });
 
         } });

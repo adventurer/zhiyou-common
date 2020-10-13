@@ -11,6 +11,7 @@ const store = new Vuex.Store({
 		nickName:null,
 		avatarUrl:null,
 		session_key:null,
+		account_videoAd:null,
 		// testvuex:false,
   //       colorIndex: 0,
         colorList: ['#FF0000','#00FF00','#0000FF']

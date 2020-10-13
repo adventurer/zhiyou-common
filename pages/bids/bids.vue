@@ -23,18 +23,24 @@
 			<view class="cu-item shadow">
 				<view class="cu-list menu">
 					<view class="cu-item" :class="menuArrow?'arrow':''" v-for="(item,index) in bids">
-						<view class="content padding-tb-sm">
+						<view class="content padding-tb-sm"> 
 							<view>
 								<text class="text-blue margin-right-xs"></text>{{item.Name}}</view>
 							<view class="text-gray text-sm">
-								<text class="cuIcon-infofill margin-right-xs"></text>{{item.CreatedAt}}</view>
+								<text class="margin-right-xs"></text>{{item.CreatedAt}}</view>
 						</view>
-						<view class="action">
+						<!-- <view class="action">
 							<view class="solid-bottom text-xxl padding">
 								<text v-if="item.Status==2" class="cuIcon-roundcheckfill text-green"></text>
 								<text v-if="item.Status==1" class="cuIcon-roundcheckfill red"></text>
 							</view>
+						</view> -->
+						<view class="action">
+							<button @click="refund(item.ID)" :disabled="disable" v-if="item.Status==2" class="cu-btn bg-red xl">退款</button>
+							<button v-if="item.Status==3" :disabled="true" class="cu-btn bg-red xl">已退款</button>
+							<button v-if="item.Status==1" :disabled="true" class="cu-btn bg-red xl">未支付</button>
 						</view>
+						
 					</view>
 				</view> 
 			</view> 
@@ -52,32 +58,14 @@
 				avatarUrl:"http://admin.jiasu.zhifool.com:8080/uploads/about.png",
 				bids:{},
 				loading:true,
-				tips:"充值记录加载中!"
+				tips:"充值记录加载中!",
+				disable:false,
 			}
 		},
 		mounted() {
 			
 			//获取账户基本信息
 			let that = this  
-			// wx.request({ 
-			// 	url: 'https://admin.jiasu.zhifool.com/api/v1/weixin/microuinfo',
-			// 	data: {
-			// 		openid: that.$store.state.openid,
-			// 	}, 
-			// 	header: {
-			// 	    'content-type': 'application/x-www-form-urlencoded' // 默认值
-			// 	},
-			// 	method:"POST",
-			// 	success (res) {
-			// 		console.log(res.data)
-			// 		that.expiredAt = res.data.Data.ExpiredAt
-			// 		that.nickName = res.data.Data.NickName
-			// 		that.avatarUrl = res.data.Data.HeadImgURL
-					
-					
-			// 	}
-			// })
-			 
 			wx.request({
 				url: 'https://admin.jiasu.zhifool.com/api/v1/weixin/microrechargelog',
 				data: {
@@ -114,12 +102,14 @@
 			
 		},
 		methods: {
-			freeHours(){
+			refund(bidId){
 				let that = this
+				that.disable = true
 				wx.request({
-					url: 'https://admin.jiasu.zhifool.com/api/v1/weixin/microfreehours',
+					url: 'https://admin.jiasu.zhifool.com/api/v1/weixin/microrefund',
 					data: {
 						openid: that.$store.state.openid,
+						ticketid:bidId,
 					}, 
 					header: {
 					    'content-type': 'application/x-www-form-urlencoded' // 默认值
@@ -132,16 +122,16 @@
 						  content: res.data.Msg,
 						  showCancel:false,
 						  success (res) {
-						    if (res.confirm) {
-						      console.log('用户点击确定')
-						    } else if (res.cancel) {
-						      console.log('用户点击取消')
-						    }
+						    // if (res.confirm) {
+						    //   console.log('用户点击确定')
+						    // } else if (res.cancel) {
+						    //   console.log('用户点击取消')
+						    // }
 						  }
 						})
 					}
 				})
-			}
+			},
 		}
 	}
 </script>

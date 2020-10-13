@@ -152,6 +152,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 //
 //
 //
+//
 var _default =
 {
   data: function data() {
@@ -184,7 +185,18 @@ var _default =
         console.log("ad loaded...");
       });
       this.videoAd.onError(function (err) {
-        console.log("ad err...");
+        wx.showModal({
+          title: '提示',
+          content: err.errMsg,
+          showCancel: false,
+          success: function success(res) {
+            if (res.confirm) {
+              wx.redirectTo({
+                url: '/pages/index/index' });
+
+            }
+          } });
+
       });
       this.videoAd.onClose(function (res) {
         if (res && res.isEnded) {

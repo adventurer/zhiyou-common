@@ -18,7 +18,7 @@
 				首页
 			</button> 
 			<view class="action text-orange" @click="NavChange" data-cur="account">
-				<view class="cuIcon-profilefill"></view> 账户中心
+				<view class="cuIcon-timefill"></view> 领时长
 			</view>
 			<!-- <button class="action text-orange" open-type="contact">
 				<view class="cuIcon-communityfill"></view> 客服

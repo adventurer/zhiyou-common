@@ -14,15 +14,19 @@
 		<!-- <scroll-view scroll-y class="page"> -->
 			<view class="nav-list" style="margin-top: 80rpx;">
 				<view @tap="recharge(item.Fee)" style="width: 100%;" hover-class='none' :open-type='none' class="nav-li" :class="'bg-'+item.Color"
-				 :style="[{animation: 'show ' + ((index+1)*0.2+1) + 's 1'}]" v-for="(item,index) in elements" :key="index">
+				  v-for="(item,index) in elements" :key="index">
 					<view class="nav-title">{{item.Title}}</view>
 					<view class="nav-name">{{item.Name}}</view>
 					<text :class="'cuIcon-' + item.CuIcon"></text>
 				</view>
 			</view>
-			<view class="cu-tabbar-height"></view>
+			<!-- <view class="cu-tabbar-height"></view> -->
 		<!-- </scroll-view> -->
-		
+		<view class="padding" style="margin-bottom: 80rpx;">
+			<view class="padding-xl radius shadow bg-blue margin-top">充值承诺:
+			充值3天内,若您在使用中感到不满意了,或在游戏中不开心了,知游加速将无条件退款,可点击首页充值记录3天内的订单自动完成退款操作.
+			</view>
+		</view>
 		
 	</view>
 </template>

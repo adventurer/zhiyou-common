@@ -191,6 +191,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 //
 //
 //
+//
 var _default =
 {
   data: function data() {
@@ -209,13 +210,19 @@ var _default =
         name: '充值记录' },
       {
         cuIcon: 'friend',
-        color: 'olive',
+        color: 'orange',
         badge: 0,
         nameEn: 'friends',
-        name: '官方群' }],
+        name: '官方群' },
+      {
+        cuIcon: 'copy',
+        color: 'orange',
+        badge: 0,
+        nameEn: 'copy',
+        name: '复制id' }],
 
       modalName: null,
-      gridCol: 3,
+      gridCol: 4,
       gridBorder: false,
       menuBorder: false,
       menuArrow: false,
@@ -232,6 +239,7 @@ var _default =
 
   },
   mounted: function mounted() {
+    wx.showShareMenu();
     // this.TowerSwiper('swiperList');
     // 初始化towerSwiper 传已有的数组名即可
     var that = this;
@@ -279,6 +287,10 @@ var _default =
         wx.navigateTo({
           url: "/pages/friends/friends" });
 
+      }
+
+      if (e == "copy") {
+        this.copyOpenid();
       }
     },
     Gridchange: function Gridchange(e) {
@@ -368,6 +380,25 @@ var _default =
         success: function success(res) {
           // 通过eventChannel向被打开页面传送数据
           res.eventChannel.emit('acceptDataFromOpenerPage', { data: 'test' });
+        } });
+
+    },
+    copyOpenid: function copyOpenid() {
+      var that = this;
+      wx.setClipboardData({
+        data: that.$store.state.openid,
+        success: function success(res) {
+          wx.getClipboardData({
+            success: function success(res) {
+              wx.showModal({
+                title: '提示',
+                content: "已复制openid到剪辑板",
+                showCancel: false,
+                success: function success(res) {
+                } });
+
+            } });
+
         } });
 
     } } };exports.default = _default;

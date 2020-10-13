@@ -175,6 +175,24 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default =
 {
   data: function data() {
@@ -184,11 +202,20 @@ var _default =
       avatarUrl: "http://admin.jiasu.zhifool.com:8080/uploads/about.png",
       bids: {},
       board: "",
-      interstitialAd: null };
+      // videoAd:null,
+      btnText: "领免费时长(0/5)",
+      loading: false,
+      disable: '',
+      loadingCard: false,
+      disableCard: '',
+      cardTime: null };
 
   },
   mounted: function mounted() {
-
+    // 查询领取次数
+    this.checkCount();
+    //查询集体补时卡时间
+    this.teamCardTimeCheck();
     //获取账户基本信息
     var that = this;
     wx.request({
@@ -206,60 +233,32 @@ var _default =
         that.nickName = res.data.Data.NickName;
         that.avatarUrl = res.data.Data.HeadImgURL;
         console.log(res.data.Data.ExpiredAt);
-        var d = new Date(res.data.Data.ExpiredAt);
-        that.expiredAt = d.toLocaleString();
+
+
+
+        that.expiredAt = new Date(res.data.Data.ExpiredAt).Format("yyyy-MM-dd hh:mm:ss");
+        // that.expiredAt = d.toLocaleString()
+        // that.expiredAt = d
       } });
 
 
-    // 在页面中定义插屏广告
+    // 在页面onLoad回调事件中创建激励视频广告实例
+    if (wx.createRewardedVideoAd) {
+      if (that.$store.state.account_videoAd == null) {
+        console.log(that.$store.state.account_videoAd);
+        console.log("ad init ...");
+        that.initAd();
+      }
 
-    // 在页面onLoad回调事件中创建插屏广告实例
-    if (wx.createInterstitialAd) {
-      that.interstitialAd = wx.createInterstitialAd({
-        adUnitId: 'adunit-5aa5637f37f8c6a5' });
 
-      that.interstitialAd.onLoad(function () {});
-      that.interstitialAd.onError(function (err) {});
-      that.interstitialAd.onClose(function () {});
     }
-
-
-
-
-
 
   },
   methods: {
-    copyOpenid: function copyOpenid() {
+    teamCardTimeCheck: function teamCardTimeCheck() {
       var that = this;
-      wx.setClipboardData({
-        data: that.$store.state.openid,
-        success: function success(res) {
-          wx.getClipboardData({
-            success: function success(res) {
-              wx.showModal({
-                title: '提示',
-                content: "已复制openid到剪辑板",
-                showCancel: false,
-                success: function success(res) {
-                } });
-
-            } });
-
-        } });
-
-    },
-    freeHours: function freeHours() {
-      var that = this;
-      // 在适合的场景显示插屏广告
-      if (that.interstitialAd) {
-        that.interstitialAd.show().catch(function (err) {
-          console.error(err);
-        });
-      }
-
       wx.request({
-        url: 'https://admin.jiasu.zhifool.com/api/v1/weixin/microfreehours',
+        url: 'https://admin.jiasu.zhifool.com/api/v1/weixin/microteamcardtimecheck',
         data: {
           openid: that.$store.state.openid },
 
@@ -268,20 +267,147 @@ var _default =
         },
         method: "POST",
         success: function success(res) {
-          console.log(res.data);
+          that.cardTime = res.data.Data;
+        } });
+
+    },
+    teamCardGet: function teamCardGet() {
+      var that = this;
+      that.loadingCard = true;
+      that.disableCard = 'disabled';
+      wx.request({
+        url: 'https://admin.jiasu.zhifool.com/api/v1/weixin/microteamcardget',
+        data: {
+          openid: that.$store.state.openid },
+
+        header: {
+          'content-type': 'application/x-www-form-urlencoded' // 默认值
+        },
+        method: "POST",
+        success: function success(res) {
           wx.showModal({
             title: '提示',
             content: res.data.Msg,
             showCancel: false,
             success: function success(res) {
-              if (res.confirm) {
-                console.log('用户点击确定');
-              } else if (res.cancel) {
-                console.log('用户点击取消');
-              }
+              // 请求领取完毕
+              that.checkCount();
+              that.loadingCard = false;
+              that.disableCard = '';
             } });
 
         } });
+
+
+    },
+    initAd: function initAd() {
+      var that = this;
+      that.$store.state.account_videoAd = wx.createRewardedVideoAd({
+        adUnitId: 'adunit-75385a75bf02c5a3' });
+
+      // console.log(that.$store.state.account_videoAd)
+      that.$store.state.account_videoAd.onLoad(function () {});
+      that.$store.state.account_videoAd.onError(function (err) {
+        wx.showModal({
+          title: '获取广告失败',
+          content: "由于没有适合您的广告,暂时无法领取",
+          showCancel: false,
+          success: function success(res) {
+            // 广告拉取错误
+            that.loading = false;
+            that.disable = '';
+          } });
+
+      });
+      that.$store.state.account_videoAd.onClose(function (res) {
+        that.loading = false;
+        that.disable = '';
+        // that.$store.state.account_videoAd.onLoad(() => {})
+        if (res && res.isEnded) {
+          //领取操作 
+          wx.request({
+            url: 'https://admin.jiasu.zhifool.com/api/v1/weixin/microfreehours',
+            data: {
+              openid: that.$store.state.openid },
+
+            header: {
+              'content-type': 'application/x-www-form-urlencoded' // 默认值
+            },
+            method: "POST",
+            success: function success(res) {
+              wx.showModal({
+                title: '提示',
+                content: res.data.Msg,
+                showCancel: false,
+                success: function success(res) {
+                  // 请求领取完毕
+                  that.checkCount();
+
+                } });
+
+            } });
+
+
+        } else {
+          wx.showModal({
+            title: '提示',
+            content: "您提前中断了视频广告,无法获得时长奖励",
+            showCancel: false,
+            success: function success(res) {
+              // 请求领取完毕
+
+            } });
+
+        }
+      });
+    },
+
+    freeHours: function freeHours() {
+      var that = this;
+      that.loading = true;
+      that.disable = 'disabled';
+      wx.showToast({
+        title: '点击广告将为知游戏带来收益,并增加明日集体时长',
+        icon: 'none',
+        duration: 3000 });
+
+
+      // 用户触发广告后，显示激励视频广告
+      if (that.$store.state.account_videoAd) {
+        that.$store.state.account_videoAd.show().catch(function () {
+          // 失败重试
+          that.$store.state.account_videoAd.load().
+          then(function () {return that.$store.state.account_videoAd.show();}).
+          catch(function (err) {
+            wx.showModal({
+              title: '获取广告重试失败',
+              content: "由于没有适合您的广告,暂时无法领取",
+              showCancel: false,
+              success: function success(res) {
+
+              } });
+
+          });
+        });
+      }
+
+
+    },
+    checkCount: function checkCount() {
+      var that = this;
+      wx.request({
+        url: 'https://admin.jiasu.zhifool.com/api/v1/weixin/microfreehourcount',
+        data: {
+          openid: that.$store.state.openid },
+
+        header: {
+          'content-type': 'application/x-www-form-urlencoded' // 默认值
+        },
+        method: "POST",
+        success: function success(res) {
+          that.btnText = "领免费时长(" + res.data.Data + "/5)";
+        } });
+
 
     } } };exports.default = _default;
 

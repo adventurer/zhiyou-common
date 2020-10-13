@@ -5,4 +5,10 @@
 	margin-left: calc(var(--left) * 100rpx - 150rpx);
 	z-index: var(--index);
 }
+.cu-item .content{
+	min-height: 100rpx;
+	background-color: #fff;
+	padding-left: 3%;
+	padding-top: 10rpx;
+}
 
