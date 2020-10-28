@@ -164,23 +164,26 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 //
 //
 //
+//
+//
 var _default =
 {
   data: function data() {
     return {
-      PageCur: 'home'
+      PageCur: 'home',
       // PageCur: 'article',
       // PageCur: 'account',
       // PageCur: 'login',
       // PageCur: 'recharge',
       // PageCur: 'bids',
-    };
+      brand: '' };
 
   },
   onLoad: function onLoad() {
-
-
-
+    var sysinfo = wx.getSystemInfoSync();
+    var that = this;
+    console.log(sysinfo.brand);
+    that.brand = sysinfo.brand;
 
   },
   methods: {

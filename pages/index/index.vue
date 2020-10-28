@@ -29,7 +29,9 @@
 			<view class="action text-orange" @click="NavChange" data-cur="component">
 				<view class="cuIcon-profilefill"></view> 组件
 			</view> -->
-			<view class="bg-red submit" @click="NavChange" data-cur="recharge">充值</view>
+			<view class="bg-red submit" @click="NavChange" data-cur="recharge" v-if="brand != 'iPhone'">充值</view>
+			<view class="bg-red submit" data-cur="recharge" v-if="brand == 'iPhone'">ios不可用</view>
+			
 		</view>
 	</view> 
 </template> 
@@ -44,14 +46,15 @@
 				// PageCur: 'login',
 				// PageCur: 'recharge',
 				// PageCur: 'bids',
-
+				brand:'',
 			} 
 		},
 		onLoad() {
-			
-			
-			
-			
+			let sysinfo = wx.getSystemInfoSync()
+			var that = this
+			console.log(sysinfo.brand)
+			that.brand = sysinfo.brand
+
 		}, 
 		methods: {
 			NavChange: function(e) {
