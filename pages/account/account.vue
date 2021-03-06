@@ -1,7 +1,7 @@
 <template name="account">
 	<view class="">
 		<cu-custom bgColor="bg-gradual-pink">
-			<block slot="content">领时长</block>
+			<block slot="content">我的账户</block>
 		</cu-custom>
 		
 		
@@ -9,7 +9,7 @@
 			
 			<!-- 头像卡片 -->
 			<view class="cu-item shadow">
-				<view class="cu-list menu-avatar">
+				<view class="cu-list menu-avatar"> 
 					<view class="cu-item">
 						<!-- <view class="cu-avatar round lg" :style="{'backgroundImage':'url('+avatarUrl+')'}"></view> -->
 						<view class="userinfo-avatar cu-avatar">
@@ -18,7 +18,7 @@
 						<view class="content flex-sub">
 							<view class="flex justify-between">
 								<open-data type="userNickName" class=""></open-data>
-								<button @click="freeHours" class="cu-btn bg-red fr" :loading="loading" :disabled="disable">{{btnText}}</button>
+								<!-- <button @click="freeHours" class="cu-btn bg-red fr" :loading="loading" :disabled="disable">{{btnText}}</button> -->
 							</view>
 							<view class="text-sm flex justify-between">
 								加速到期时间:<text>{{expiredAt}}</text>
@@ -30,12 +30,12 @@
 			
 			
 			<!-- 集体补时卡 -->
-			<view style="margin-left: 5%;margin-right: 5%;" class="">
+<!-- 			<view style="margin-left: 5%;margin-right: 5%;" class="">
 				<button @click="teamCardGet()" class="cu-btn block bg-red lg" :loading="loadingCard" :disabled="disableCard">点击使用集体补时卡({{cardTime}}小时)</button>
-			</view>
+			</view> -->
 			
 			<!-- 提示文字 -->
-			<view class="solids-bottom padding-xs flex align-center">
+<!-- 			<view class="solids-bottom padding-xs flex align-center">
 				<view class="flex-sub">
 					<view class="text-sm padding-sm">
 						<text class="text-bold">(1).免费时长为每日零点开始可领取5次.以领取时刻为准,每次领取加速器到期时间将向后顺延2个小时.</text>
@@ -45,15 +45,15 @@
 					</view>
 					<view class="text-sm padding-sm">
 						<text class="text-bold">(3).领取免费时长时若进行了广告点击,将增加次日集体补时卡时间（最长14小时）,具体时间由当日广告收益得出.只有前一天领取过免费时长的用户才能领取集体补时卡</text>
-					</view>
+					</view> 
 				</view>
-			</view>
+			</view> -->
 			
 			
 			<!-- 广告 -->
-			<view style="margin-bottom: 80rpx;" class="padding flex flex-wrap align-center">
+<!-- 			<view style="margin-bottom: 80rpx;" class="padding flex flex-wrap align-center">
 				<ad  unit-id="adunit-bebcfa8da6c5f5bb" ad-type="video" ad-theme="white"></ad>
-			</view>
+			</view> -->
 			
 			
 		</view>
@@ -66,6 +66,7 @@
 		data() {
 			return {
 				expiredAt:null,
+				PayExpiredAt:null,
 				nickName:null,
 				avatarUrl:"http://admin.jiasu.zhifool.com:8080/uploads/about.png",
 				bids:{},
@@ -105,6 +106,7 @@
 					
 					
 					that.expiredAt = new Date(res.data.Data.ExpiredAt).Format ("yyyy-MM-dd hh:mm:ss");
+					that.PayExpiredAt = new Date(res.data.Data.PayExpiredAt).Format ("yyyy-MM-dd hh:mm:ss");
 					// that.expiredAt = d.toLocaleString()
 					// that.expiredAt = d
 				}

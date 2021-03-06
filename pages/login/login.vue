@@ -1,21 +1,24 @@
 <template name="login">
 	<view>
 		<cu-custom bgColor="bg-gradual-pink">
-			<block slot="content">知游加速登录</block>
+			<block slot="content">知游加速器登录</block>
 		</cu-custom>
-		<view class="btn_login">
-			<!-- <button @tap="login()" open-type='getUserInfo' class="cu-btn block bg-black margin-tb-sm lg" :loading="loading"> 点击登录</button> -->
-			<button @getuserinfo="handleGetUserInfo" open-type='getUserInfo' class="cu-btn block bg-blue margin-tb-sm lg" :loading="loading" :disabled="disable" type="">{{loginText}}</button>
-		</view>
+		
 		
 		<view class="solids-bottom padding-xs flex align-center">
 			<view class="flex-sub">
 				<view class="text-xl padding text-center">
 					<text class="text-black text-bold ">登录说明</text>
 				</view>
-				<view class="padding">1.点击登录将打开30秒视频广告,此时后台将在广告播放进行时打开加速器.若10秒内未弹出加速器界面,您可以关闭广告和小程序重新扫码尝试登录.</view>
-				<view class="padding">2.由于可弹出的广告数量有限,请尽量点击广告来延长次日集体补时时长.</view>
+				<view class="padding">1.新用户首次扫码登录时，将赠送7天免费时间。</view>
+				<view class="padding">2.点击登录后客户端将弹出加速器游戏界面。</view>
+				<view class="padding">3.请先选择好需要加速的游戏并启动加速，再打开游戏，才能加速游戏。</view>
 			</view>
+		</view>
+		
+		<view class="btn_login">
+			<!-- <button @tap="login()" open-type='getUserInfo' class="cu-btn block bg-black margin-tb-sm lg" :loading="loading"> 点击登录</button> -->
+			<button @getuserinfo="handleGetUserInfo" open-type='getUserInfo' class="cu-btn block bg-blue margin-tb-sm lg" :loading="loading" :disabled="disable" type="">{{loginText}}</button>
 		</view>
 		
 	</view>
@@ -28,9 +31,9 @@
 				clientid:null,
 				info:{},
 				loading:false,
-				disable:'',
+				disable:'', 
 				adshow:false,
-				loginText:"点击观看广告并登录",
+				loginText:"点击登录",
 				videoAd:null,
 			};
 		},
@@ -54,7 +57,7 @@
 			  })
 			  this.videoAd.onError((err) => {
 				  wx.showModal({
-				    title: '提示',
+				    title: '提示', 
 				    content: err.errMsg,
 				    showCancel:false,
 				    success (res) {
@@ -131,16 +134,16 @@
 				
 				
 				// 用户触发广告后，显示激励视频广告
-				if (this.videoAd) {
-				  this.videoAd.show().catch(() => {
-				    // 失败重试
-				    this.videoAd.load()
-				      .then(() => this.videoAd.show())
-				      .catch(err => {
-				        console.log('激励视频 广告显示失败')
-				      })
-				  })
-				}
+				// if (this.videoAd) {
+				//   this.videoAd.show().catch(() => {
+				//     // 失败重试
+				//     this.videoAd.load()
+				//       .then(() => this.videoAd.show())
+				//       .catch(err => {
+				//         console.log('激励视频 广告显示失败')
+				//       })
+				//   })
+				// }
 				
 				console.log("handle...")
 				wx.getSetting({
@@ -190,6 +193,10 @@
 								  success (res) {
 								    
 								  }
+								})
+							}else{
+								wx.redirectTo({
+								  url: '/pages/index/index'
 								})
 							}
 					  		

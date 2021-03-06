@@ -18,7 +18,7 @@
 				首页
 			</button> 
 			<view class="action text-orange" @click="NavChange" data-cur="account">
-				<view class="cuIcon-timefill"></view> 领时长
+				<view class="cuIcon-timefill"></view> 我的账户
 			</view>
 			<!-- <button class="action text-orange" open-type="contact">
 				<view class="cuIcon-communityfill"></view> 客服
@@ -34,22 +34,23 @@
 			
 		</view>
 	</view> 
-</template> 
-
+</template>
+ 
 <script>
-	export default { 
+	export default {   
 		data() { 
 			return {
-				PageCur: 'home',
+				PageCur: 'home',  
 				// PageCur: 'article',
 				// PageCur: 'account',
-				// PageCur: 'login',
+				// PageCur: 'login', 
 				// PageCur: 'recharge',
 				// PageCur: 'bids',
-				brand:'',
+				brand:'',  
 			} 
 		},
-		onLoad() {
+		onLoad: function (options) {
+
 			let sysinfo = wx.getSystemInfoSync()
 			var that = this
 			console.log(sysinfo.brand)

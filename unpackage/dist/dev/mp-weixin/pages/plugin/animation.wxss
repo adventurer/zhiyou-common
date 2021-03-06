@@ -306,7 +306,8 @@
 }
 }
 image[class*="gif-"] {
-	border-radius: 6rpx;
+	-webkit-border-radius: 6rpx;
+	        border-radius: 6rpx;
 	display: block;
 }
 

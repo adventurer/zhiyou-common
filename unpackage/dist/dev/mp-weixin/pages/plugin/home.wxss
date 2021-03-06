@@ -17,7 +17,8 @@
 	position: absolute;
 	width: 60rpx;
 	height: 6rpx;
-	border-radius: 20rpx;
+	-webkit-border-radius: 20rpx;
+	        border-radius: 20rpx;
 	background-color: #fff;
 	display: block;
 	top: 60rpx;
@@ -29,7 +30,8 @@
 	content: "";
 	position: absolute;
 	width: 140rpx;
-	border-radius: 6rpx;
+	-webkit-border-radius: 6rpx;
+	        border-radius: 6rpx;
 	height: 24rpx;
 	background-color: #fff;
 	display: block;
